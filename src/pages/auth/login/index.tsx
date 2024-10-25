@@ -43,6 +43,7 @@ export default function Login() {
       );
       if (user) {
         localStorage.setItem("authenticated", "true");
+        localStorage.setItem("currentlyLogged",data.email)
         navigate("/dashboard/home");
       } else {
         toast.error("No user found, please sign up");
@@ -63,6 +64,8 @@ export default function Login() {
         users.push(newUser);
         localStorage.setItem("users", JSON.stringify(users));
         localStorage.setItem("authenticated", "true");
+        localStorage.setItem("currentlyLogged",data.email)
+
         toast.success("Sign up successful");
         navigate("/dashboard/home");
         setSignIn(true);
@@ -112,7 +115,7 @@ export default function Login() {
               className="text-right font-bold text-gray-500 cursor-pointer"
               onClick={signupHandler}
             >
-              New here signup
+              {signIn ? " New here signup" : "already member login"}
             </p>
           </form>
         </div>
