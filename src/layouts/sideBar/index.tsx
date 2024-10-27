@@ -1,6 +1,25 @@
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { House } from "lucide-react";
+import { useAuthContext } from "@/contexts/authContext";
+import { useNavigate } from "react-router-dom";
+
+import { House, CircleUser } from "lucide-react";
+
 const SideBar = () => {
+  const { user, logout } = useAuthContext();
+  const navigate = useNavigate();
+  const logoutHandler = () => {
+    logout();
+    navigate("/");
+  };
+
   return (
     <div className="flex flex-col justify-between h-[100%] p-8">
       <div className="flex flex-col justify-evenly gap-10 ">
@@ -17,8 +36,17 @@ const SideBar = () => {
         <hr></hr>
         <div className="font-semibold">My Lists</div>
       </div>
-      <div className="bg-blue-500 ">
-        <div>5</div>
+      <div className="flex flex-col items-center">
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <CircleUser />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>{user?.email}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={logoutHandler}>Logout</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );

@@ -5,25 +5,28 @@ import Loader from "@/components/loader";
 import MovieCard from "@/components/dashBoard/MovieCard";
 
 const Home = () => {
-  const [searchTitle, setSearchTitle] = useState("predator");
+  const [searchTitle, setSearchTitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [movies, setMovies] = useState([]);
+
   const getMovies = async () => {
     try {
       setIsLoading(true);
       const result = await fetchMovies(searchTitle);
-      console.log(result, "result");
-      setMovies(result?.Search);
+     setMovies(result?.Search);
     } catch (error) {
       setIsLoading(false);
-      console.log(error);
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
   };
-  const handleChange=()=>{
-
-  }
+  const handleChange = (e) => {
+    setSearchTitle(e.target.value);
+  };
+  const handleSearch = () => {
+    getMovies();
+  };
   useEffect(() => {
     getMovies();
   }, []);
@@ -39,12 +42,20 @@ const Home = () => {
             onChange={handleChange}
             value={searchTitle}
           />
+          <button onClick={handleSearch}>Search</button>
         </div>
-        <div className="grid grid-cols-4 gap-5 p-5">{movies?.map((item)=>{
-          return   <MovieCard title={item?.Title} year={item?.Year } posterUrl={item?.Poster}/>
-        })
-          }
-        
+        <div className="grid grid-cols-4 gap-5 p-5">
+          {movies?.map((item) => {
+            return (
+              <MovieCard
+                key={item?.imdbID}
+                id={item?.imdbID}
+                title={item?.Title}
+                year={item?.Year}
+                posterUrl={item?.Poster}
+              />
+            );
+          })}
         </div>
       </div>
     </div>

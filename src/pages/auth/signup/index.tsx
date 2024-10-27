@@ -17,12 +17,12 @@ const schema = yup
 
 type FormData = yup.InferType<typeof schema>;
 
-export default function Login() {
+export default function SignUp() {
   const navigate = useNavigate();
-  const { login } = useAuthContext();
+  const { signUp } = useAuthContext();
 
   const signupHandler = () => {
-    navigate("/signup");
+    navigate("/login");
   };
 
   const {
@@ -34,20 +34,21 @@ export default function Login() {
   });
 
   const onSubmit = (data: FormData) => {
-    const response = login(data.email);
-    if (response.statusCode === 200) {
+    const response = signUp(data.email);
+    if (response.statusCode === 201) {
       toast.success(response.message);
       navigate("/dashboard/home");
     } else {
       toast.error(response.message);
     }
+   
   };
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] flex flex-col justify-center py-12 sm:px-6 lg:px-8 max-sm:px-5">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Login to your account
+          Sign up here
         </h2>
       </div>
 
@@ -78,14 +79,14 @@ export default function Login() {
                 type="submit"
                 className="w-full bg-[#FEDFE1] text-black hover:bg-[#f7bec7] p-2  "
               >
-                Log in
+                Sign up
               </button>
             </div>
             <p
               className="text-right font-bold text-gray-500 cursor-pointer"
               onClick={signupHandler}
             >
-              New here signup
+              already member login
             </p>
           </form>
         </div>
