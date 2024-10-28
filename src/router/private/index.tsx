@@ -9,7 +9,7 @@ const PrivateRoutes = [
     isIndex: true,
   },
   {
-    path: "list",
+    path: "list/:searchKey",
     name: "list",
     element: <MyList />,
   },

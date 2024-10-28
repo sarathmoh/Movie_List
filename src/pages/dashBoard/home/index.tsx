@@ -1,19 +1,34 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { fetchMovies } from "@/api/movies";
 import { Input } from "@/components/ui/input";
 import Loader from "@/components/loader";
 import MovieCard from "@/components/dashBoard/MovieCard";
+import { useWatchListContext } from "@/contexts/watchListContext";
 
 const Home = () => {
   const [searchTitle, setSearchTitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [movies, setMovies] = useState([]);
+  const { watchList } = useWatchListContext();
 
   const getMovies = async () => {
     try {
       setIsLoading(true);
       const result = await fetchMovies(searchTitle);
-     setMovies(result?.Search);
+
+      const userSelection = result.Search?.map((movie) => {
+        return watchList.some((watchListMovie) => {
+          return watchListMovie.id === movie.imdbID;
+        })
+          ? {
+              ...movie,
+              isBookMarked: true,
+              searchKey: searchTitle,
+            }
+          : { ...movie, isBookMarked: false, searchKey: searchTitle };
+      });
+
+      setMovies(userSelection);
     } catch (error) {
       setIsLoading(false);
       console.error(error);
@@ -30,6 +45,21 @@ const Home = () => {
   useEffect(() => {
     getMovies();
   }, []);
+
+  useEffect(() => {
+    const filteredMovies = movies.map((movie) => {
+      return watchList.some((watchListMovie) => {
+        return watchListMovie.id === movie.imdbID;
+      })
+        ? {
+            ...movie,
+            isBookMarked: true,
+          }
+        : movie;
+    });
+
+    setMovies(filteredMovies);
+  }, [watchList]);
   if (isLoading) return <Loader />;
   return (
     <div>
@@ -48,6 +78,9 @@ const Home = () => {
           {movies?.map((item) => {
             return (
               <MovieCard
+                pageType="home"
+                searchKey={item?.searchKey}
+                isBookMarked={item?.isBookMarked}
                 key={item?.imdbID}
                 id={item?.imdbID}
                 title={item?.Title}

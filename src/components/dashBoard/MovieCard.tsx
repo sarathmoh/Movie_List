@@ -6,15 +6,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BookmarkPlus } from "lucide-react";
+import { BookmarkCheck, BookmarkMinus, BookmarkPlus } from "lucide-react";
 import { useWatchListContext } from "@/contexts/watchListContext";
 
 interface MovieCardProps {
+  searchKey: string;
+  isBookMarked: boolean;
   id: string;
   title: string;
   year: number;
   plotSummary: string;
   posterUrl: string;
+  pageType: string;
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({
@@ -22,8 +25,11 @@ const MovieCard: React.FC<MovieCardProps> = ({
   year,
   posterUrl,
   id,
+  isBookMarked,
+  searchKey,
+  pageType,
 }) => {
-  const { addToWatchList } = useWatchListContext();
+  const { addToWatchList, removeFromWatchList } = useWatchListContext();
   return (
     <Card className="w-full max-w-sm mx-auto overflow-hidden">
       <div className="relative">
@@ -34,20 +40,42 @@ const MovieCard: React.FC<MovieCardProps> = ({
             className="object-cover w-full"
           />
         </div>
-        <BookmarkPlus
-          color="white"
-          size={"40px"}
-          className="bg-black  absolute top-0 left-0"
-          onClick={() => {
-            const movie = {
-              id: id,
-              title: title,
-              year: year,
-              poster: posterUrl,
-            };
-            addToWatchList(movie);
-          }}
-        />
+        {isBookMarked && pageType === "home" ? (
+          <BookmarkCheck
+            color="green"
+            size={"40px"}
+            className="bg-black  absolute top-0 left-0"
+          />
+        ) : (
+          pageType === "home" && (
+            <BookmarkPlus
+              color="white"
+              size={"40px"}
+              className="bg-black  absolute top-0 left-0"
+              onClick={() => {
+                const movie = {
+                  id: id,
+                  title: title,
+                  year: year,
+                  poster: posterUrl,
+                  searchKey: searchKey,
+                };
+                addToWatchList(movie);
+              }}
+            />
+          )
+        )}
+
+        {pageType === "watchlist" && (
+          <BookmarkMinus
+            color="white"
+            size={"40px"}
+            className="bg-black  absolute top-0 left-0"
+            onClick={() => {
+              removeFromWatchList(id, searchKey);
+            }}
+          />
+        )}
       </div>
 
       <CardHeader>
@@ -65,4 +93,4 @@ const MovieCard: React.FC<MovieCardProps> = ({
   );
 };
 
-export default MovieCard
+export default MovieCard;
