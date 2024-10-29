@@ -73,7 +73,7 @@ const SideBar: React.FC<SidebarProps> = ({ handleclose }) => {
         <hr></hr>
         <div className="font-semibold">
           <p className="mb-8">MyLists</p>
-          <div className="flex flex-col gap-2 overflow-y-auto h-[400px]">
+          <div className="flex flex-col gap-2 overflow-y-auto h-[400px] max-sm:h-[100px]">
             {sideLists.map((name) => {
               return (
                 <NavLink
