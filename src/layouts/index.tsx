@@ -6,6 +6,9 @@ import { useState } from "react";
 import { Menu } from "lucide-react";
 const Layout = () => {
   const [open, setOpen] = useState(false);
+  const handleSideBar=()=>{
+    setOpen(false)
+  }
   return (
     <div className=" md:h-screen grid grid-cols-12 max-md:rows-[50px auto]">
       <div className="md:hidden col-span-full">
@@ -17,13 +20,13 @@ const Layout = () => {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-64 p-0">
-            <SideBar />
+            <SideBar handleclose={handleSideBar}  />
           </SheetContent>
         </Sheet>
       </div>
 
       <div className="h-full col-end-3 col-start-1 max-md:hidden">
-        <SideBar />
+        <SideBar handleclose={handleSideBar} />
       </div>
       <div className="grid col-start-3 col-end-13 overflow-y-auto max-md:col-start-1">
         <Content />
