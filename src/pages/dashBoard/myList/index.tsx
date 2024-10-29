@@ -29,7 +29,7 @@ const MyList = () => {
         <h3 className="text-4xl font-bold">Movies by {searchKey} </h3>
       </div>
 
-      <div className="grid grid-cols-4 gap-2 p-2  ">
+      <div className="grid grid-cols-4 gap-2 p-2 max-sm:grid-cols-1 sm:max-md:grid-cols-2 md:max-lg:grid-cols-3  ">
         {movies.map((item) => {
           return (
             <MovieCard

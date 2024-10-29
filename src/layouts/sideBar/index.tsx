@@ -89,7 +89,6 @@ const SideBar = () => {
                     </>
                   )}
                 </NavLink>
-               
               );
             })}
           </div>
