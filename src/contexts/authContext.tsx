@@ -26,6 +26,7 @@ interface WatchList {
   year: string;
   id: string;
   poster: string;
+  isBookMarked: boolean;
 }
 
 interface DefaultValue {

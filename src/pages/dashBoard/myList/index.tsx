@@ -2,10 +2,11 @@ import { useWatchListContext } from "@/contexts/watchListContext";
 import { useEffect, useState } from "react";
 import MovieCard from "@/components/dashBoard/MovieCard";
 import { useParams } from "react-router-dom";
+import { WatchList } from "@/contexts/watchListContext";
 
 const MyList = () => {
   const { watchList } = useWatchListContext();
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState<WatchList[]>([]);
   const { searchKey } = useParams();
 
   useEffect(() => {

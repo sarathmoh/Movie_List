@@ -1,21 +1,14 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BookmarkCheck, BookmarkMinus, BookmarkPlus } from "lucide-react";
 import { useWatchListContext } from "@/contexts/watchListContext";
 
 interface MovieCardProps {
   searchKey: string;
-  isBookMarked: boolean;
+  isBookMarked: boolean | undefined;
   id: string;
   title: string;
   year: number;
-  plotSummary: string;
   posterUrl: string;
   pageType: string;
 }
