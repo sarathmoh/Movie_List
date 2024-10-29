@@ -13,8 +13,11 @@ import { useNavigate, NavLink } from "react-router-dom";
 import { House, CircleUser } from "lucide-react";
 import { useWatchListContext } from "@/contexts/watchListContext";
 import { SetStateAction, useEffect, useState } from "react";
+interface SidebarProps {
+  handleclose: () => void;
+}
 
-const SideBar = () => {
+const SideBar: React.FC<SidebarProps> = ({ handleclose }) => {
   const { user, logout } = useAuthContext();
   const { myList } = useWatchListContext();
   const [searchTerm, setSearchTerm] = useState("");
@@ -49,6 +52,7 @@ const SideBar = () => {
         </div>
 
         <NavLink
+          onClick={handleclose}
           to="/dashboard/home"
           className={({ isActive }) =>
             `${
@@ -73,6 +77,7 @@ const SideBar = () => {
             {sideLists.map((name) => {
               return (
                 <NavLink
+                  onClick={handleclose}
                   key={name}
                   to={`/dashboard/list/${name}`}
                   className={({ isActive }) =>
