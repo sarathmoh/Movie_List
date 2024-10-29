@@ -50,13 +50,13 @@ const Home = () => {
         })
           ? {
               ...movie,
-             
+
               isBookMarked: true,
               searchKey: getValues("title"),
             }
           : {
               ...movie,
-             
+
               isBookMarked: false,
               searchKey: getValues("title"),
             };
@@ -132,7 +132,7 @@ const Home = () => {
             )}
           </form>
         </div>
-        <div className="grid grid-cols-4 gap-5 ">
+        <div className="grid grid-cols-4 gap-5 max-sm:grid-cols-1 sm:max-md:grid-cols-2 md:max-lg:grid-cols-3">
           {isLoading ? (
             <Loader />
           ) : movies && movies?.length !== 0 ? (
