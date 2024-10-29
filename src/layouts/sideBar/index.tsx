@@ -69,7 +69,7 @@ const SideBar = () => {
         <hr></hr>
         <div className="font-semibold">
           <p className="mb-8">MyLists</p>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 overflow-y-auto h-[400px]">
             {sideLists.map((name) => {
               return (
                 <NavLink
