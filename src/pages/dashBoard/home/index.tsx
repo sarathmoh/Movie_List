@@ -31,10 +31,10 @@ const Home = () => {
     resolver: yupResolver(schema),
   });
 
-  const getMovies = async (title = "") => {
+  const getMovies = async () => {
     try {
       setIsLoading(true);
-      const result = await fetchMovies(title);
+      const result = await fetchMovies(getValues("title"));
 
       const userSelection = result.Search?.map((movie) => {
         return watchList.some((watchListMovie) => {
@@ -43,9 +43,9 @@ const Home = () => {
           ? {
               ...movie,
               isBookMarked: true,
-              searchKey: searchTitle,
+              searchKey: getValues("title"),
             }
-          : { ...movie, isBookMarked: false, searchKey: searchTitle };
+          : { ...movie, isBookMarked: false, searchKey: getValues("title") };
       });
 
       setMovies(userSelection);
@@ -57,8 +57,8 @@ const Home = () => {
     }
   };
 
-  const handleSearch = (data) => {
-    getMovies(data.title);
+  const handleSearch = () => {
+    getMovies();
   };
   useEffect(() => {
     getMovies();
