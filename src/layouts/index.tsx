@@ -12,7 +12,7 @@ const Layout = () => {
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
             <Button variant="ghost" size="icon">
-              <Menu/>
+              <Menu />
               <span className="sr-only">Toggle navigation menu</span>
             </Button>
           </SheetTrigger>
