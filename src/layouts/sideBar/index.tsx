@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { useAuthContext } from "@/contexts/authContext";
 import { useNavigate, NavLink } from "react-router-dom";
 
-import { House, CircleUser, Home } from "lucide-react";
+import { House, CircleUser } from "lucide-react";
 import { useWatchListContext } from "@/contexts/watchListContext";
 import { SetStateAction, useEffect, useState } from "react";
 

@@ -6,7 +6,6 @@ import {
   useState,
 } from "react";
 import { useAuthContext } from "./authContext";
-import { Search } from "lucide-react";
 
 interface Movie {
   title: string;
@@ -14,9 +13,11 @@ interface Movie {
   id: string;
   poster: string;
   searchKey: string;
+  isBookMarked?: boolean;
 }
 
-interface WatchList {
+export interface WatchList {
+  isBookMarked?: boolean;
   userId: string;
   title: string;
   year: number;
@@ -58,13 +59,13 @@ export const WatchListProvider: React.FC<WatchListProviderProps> = ({
     if (watchlistString) {
       const watchList = JSON.parse(watchlistString);
 
-      const myWatchList = watchList.filter((list) => {
+      const myWatchList: WatchList[] = watchList?.filter((list: WatchList) => {
         return list.userId === user.id;
       });
 
       const myList = [
         ...new Set(
-          myWatchList.map((movie) => {
+          myWatchList.map((movie: WatchList) => {
             return movie.searchKey;
           })
         ),
@@ -109,10 +110,10 @@ export const WatchListProvider: React.FC<WatchListProviderProps> = ({
     const watchListString = localStorage.getItem("watchLists");
     if (watchListString) {
       const allWatchLists = JSON.parse(watchListString);
-      const updatedWatchList = allWatchLists.filter((movie) => {
+      const updatedWatchList = allWatchLists.filter((movie: WatchList) => {
         return movie.id !== id && movie.userId === user.id;
       });
-      const otherWatchList = allWatchLists.filter((movie) => {
+      const otherWatchList = allWatchLists.filter((movie: WatchList) => {
         return movie.userId !== user.id;
       });
       const newWatchList = [...updatedWatchList, ...otherWatchList];

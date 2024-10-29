@@ -1,14 +1,23 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchMovies } from "@/api/movies";
 import { Input } from "@/components/ui/input";
 import Loader from "@/components/loader";
 import MovieCard from "@/components/dashBoard/MovieCard";
 import { useWatchListContext } from "@/contexts/watchListContext";
-import { Bookmark, BookmarkPlus } from "lucide-react";
+import { BookmarkPlus } from "lucide-react";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { title } from "process";
+
+interface Movie {
+  Title: string;
+  Year: number;
+  imdbID: string;
+  Type: string;
+  Poster: string;
+  isBookMarked: boolean;
+  searchKey: string;
+}
 
 const schema = yup.object({
   title: yup.string().required("Please enter the title"),
@@ -17,9 +26,8 @@ const schema = yup.object({
 type FormData = yup.InferType<typeof schema>;
 
 const Home = () => {
-  const [searchTitle, setSearchTitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState<Movie[]>([]);
   const { watchList } = useWatchListContext();
 
   const {
@@ -36,16 +44,22 @@ const Home = () => {
       setIsLoading(true);
       const result = await fetchMovies(getValues("title"));
 
-      const userSelection = result.Search?.map((movie) => {
+      const userSelection = result.Search?.map((movie: Movie) => {
         return watchList.some((watchListMovie) => {
           return watchListMovie.id === movie.imdbID;
         })
           ? {
               ...movie,
+             
               isBookMarked: true,
               searchKey: getValues("title"),
             }
-          : { ...movie, isBookMarked: false, searchKey: getValues("title") };
+          : {
+              ...movie,
+             
+              isBookMarked: false,
+              searchKey: getValues("title"),
+            };
       });
 
       setMovies(userSelection);
@@ -65,7 +79,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    const filteredMovies = movies.map((movie) => {
+    const filteredMovies = movies?.map((movie: Movie) => {
       return watchList.some((watchListMovie) => {
         return watchListMovie.id === movie.imdbID;
       })
