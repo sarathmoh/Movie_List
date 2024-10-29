@@ -110,9 +110,14 @@ export const WatchListProvider: React.FC<WatchListProviderProps> = ({
     if (watchListString) {
       const allWatchLists = JSON.parse(watchListString);
       const updatedWatchList = allWatchLists.filter((movie) => {
-        return movie.id !== id && movie.userId == user.id;
+        return movie.id !== id && movie.userId === user.id;
       });
-      localStorage.setItem("watchLists", JSON.stringify(updatedWatchList));
+      const otherWatchList = allWatchLists.filter((movie) => {
+        return movie.userId !== user.id;
+      });
+      const newWatchList = [...updatedWatchList, ...otherWatchList];
+
+      localStorage.setItem("watchLists", JSON.stringify(newWatchList));
       const updatedMyWatchList = watchList.filter((item) => {
         return item.id !== id;
       });

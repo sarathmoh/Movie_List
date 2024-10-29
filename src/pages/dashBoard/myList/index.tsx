@@ -15,13 +15,18 @@ const MyList = () => {
     setMovies(movies);
   }, [watchList, searchKey]);
 
-  if(movies.length===0) return <div>
-    <p>Sorry no movies found with title {searchKey} please go to home</p>
+  if (movies.length === 0)
+    return (
+      <div>
+        <p>Sorry no movies found with title {searchKey} please go to home</p>
+      </div>
+    );
 
-  </div>
   return (
-    <div>
-      <div>{searchKey}</div>
+    <div className="flex flex-col p-5 gap-4">
+      <div>
+        <h3 className="text-4xl font-bold">Movies by {searchKey} </h3>
+      </div>
 
       <div className="grid grid-cols-4 gap-2 p-2  ">
         {movies.map((item) => {

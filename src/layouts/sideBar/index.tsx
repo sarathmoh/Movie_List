@@ -8,19 +8,35 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { useAuthContext } from "@/contexts/authContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 
-import { House, CircleUser } from "lucide-react";
+import { House, CircleUser, Home } from "lucide-react";
 import { useWatchListContext } from "@/contexts/watchListContext";
+import { SetStateAction, useEffect, useState } from "react";
 
 const SideBar = () => {
   const { user, logout } = useAuthContext();
   const { myList } = useWatchListContext();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sideLists, setSideLists] = useState(myList);
   const navigate = useNavigate();
   const logoutHandler = () => {
     logout();
     navigate("/");
   };
+
+  const searchHandler = (e: { target: { value: SetStateAction<string> } }) => {
+    setSearchTerm(e.target.value);
+  };
+  function searchArray(keyword: string) {
+    const regex = new RegExp(keyword, "i");
+    return myList.filter((item) => regex.test(item));
+  }
+
+  useEffect(() => {
+    const result = searchArray(searchTerm);
+    setSideLists(result);
+  }, [searchTerm, myList]);
 
   return (
     <div className="flex flex-col justify-between h-[100%] p-8">
@@ -29,32 +45,51 @@ const SideBar = () => {
           Watchlists
         </div>
         <div>
-          <Input type="email" placeholder="search" />
+          <Input type="email" placeholder="search" onChange={searchHandler} />
         </div>
-        <div
-          className="flex gap-2 self-center bg-red-700 text-white font-semibold w-[100%] min-h-10 items-center rounded-[4px] p-2 "
-          onClick={() => {
-            navigate("/dashboard/home");
-          }}
+
+        <NavLink
+          to="/dashboard/home"
+          className={({ isActive }) =>
+            `${
+              isActive ? "bg-red-600" : "bg-slate-200"
+            } flex gap-2 self-center text-white font-semibold w-[100%] min-h-10 items-center rounded-[4px] p-2`
+          }
         >
-          <House />
-          Home
-        </div>
+          {({ isActive }) => (
+            <>
+              <House color={isActive ? "white" : "black"} />
+              <span className={isActive ? "text-white" : "text-black"}>
+                Home
+              </span>
+            </>
+          )}
+        </NavLink>
+
         <hr></hr>
         <div className="font-semibold">
-          <p>MyLists</p>
+          <p className="mb-8">MyLists</p>
           <div className="flex flex-col gap-2">
-            {myList.map((name) => {
+            {sideLists.map((name) => {
               return (
-                <div
-                  className="bg-green-500"
+                <NavLink
                   key={name}
-                  onClick={() => {
-                    navigate(`/dashboard/list/${name}`);
-                  }}
+                  to={`/dashboard/list/${name}`}
+                  className={({ isActive }) =>
+                    `${
+                      isActive ? "bg-red-600" : "bg-slate-200"
+                    } flex gap-2 self-center text-white font-semibold w-[100%] min-h-10 items-center rounded-[4px] p-2`
+                  }
                 >
-                  {name}
-                </div>
+                  {({ isActive }) => (
+                    <>
+                      <span className={isActive ? "text-white" : "text-black"}>
+                        {name}
+                      </span>
+                    </>
+                  )}
+                </NavLink>
+               
               );
             })}
           </div>
